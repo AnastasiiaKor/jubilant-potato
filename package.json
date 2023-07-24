@@ -8,9 +8,13 @@
     "start": "node ./server.js",
     "dev": " nodemon ./server.js"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnastasiiaKor/jubilant-potato.git"
+  },
   "author": "",
   "license": "ISC",
+  "homepage": "git+https://github.com/AnastasiiaKor/jubilant-potato#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "cors": "^2.8.5",
