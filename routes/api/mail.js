@@ -1,8 +1,9 @@
 const express = require("express");
-
-const ctrl = require("../../contollers/mails");
+const { validateBody } = require("../../middlewares");
+const sendMailSchema = require("../../schemas/sendMailSchema");
+const ctrl = require("../../controllers/mails");
 const router = express.Router();
 
-router.post("/", ctrl.sendMail);
+router.post("/", validateBody(sendMailSchema), ctrl.sendMail);
 
 module.exports = router;
