@@ -22,7 +22,7 @@ const appointmentSchema = new Schema(
         "Small Tattoo",
         "Large Tattoo",
         "Permanent Makeup",
-        "Consultation/ Touch-up",
+        "Consultation/Touch-up",
       ],
       required: [true, "Service is required"],
     },
@@ -52,7 +52,7 @@ const addAppointmentSchema = Joi.object({
       "Small Tattoo",
       "Large Tattoo",
       "Permanent Makeup",
-      "Consultation/ Touch-up"
+      "Consultation/Touch-up"
     )
     .required(),
   date: Joi.string().required(),
