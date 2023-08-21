@@ -3,10 +3,7 @@ const ctrlWrapper = (ctrl) => {
     try {
       await ctrl(req, res, next);
     } catch (error) {
-      console.error("Ошибка в контроллере:", error);
-      res.status(500).json({
-        error: "Ошибка сервера",
-      });
+      next(error);
     }
   };
   return func;

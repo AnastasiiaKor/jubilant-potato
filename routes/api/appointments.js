@@ -12,4 +12,6 @@ router.post(
 
 router.get("/", ctrl.getAppoinments);
 
+router.get("/slots", ctrl.getSlots);
+
 module.exports = router;

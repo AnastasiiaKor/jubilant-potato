@@ -36,7 +36,7 @@ const appointmentSchema = new Schema(
     },
     duration: {
       type: Number,
-      enum: [1, 2, 4],
+      enum: [30, 60, 120],
       required: [true, "Duration is reequired"],
     },
   },
@@ -57,7 +57,7 @@ const addAppointmentSchema = Joi.object({
     .required(),
   date: Joi.string().required(),
   slot: Joi.string().required(),
-  duration: Joi.number().valid(1, 2, 4).required(),
+  duration: Joi.number().valid(30, 60, 120).required(),
 });
 
 const schemas = {
