@@ -23,7 +23,7 @@ const getSlots = async (req, res) => {
     throw HttpError(400, "Missing date or duration in the query");
   }
   const appointments = await Appointment.find({ date: date });
-  const SLOTS = [
+  const slots = [
     { time: "11:00am", available: true },
     { time: "11:30am", available: true },
     { time: "12:00pm", available: true },
