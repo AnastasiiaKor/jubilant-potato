@@ -44,24 +44,26 @@ const getSlots = async (req, res) => {
   }
   const appointments = await Appointment.find({ date: date });
   const slots = [...SLOTS];
-  appointments.forEach((appointment) => {
-    const appointmentIndex = slots.findIndex(
-      (slot) => slot.time === appointment.slot
-    );
-    if (appointmentIndex !== -1) {
-      const totalSlotsNeeded = appointment.duration / 30;
-      for (
-        let i = appointmentIndex;
-        i < appointmentIndex + totalSlotsNeeded;
-        i++
-      ) {
-        if (i >= slots.length) {
-          break;
+  if (appointments.length) {
+    appointments.forEach((appointment) => {
+      const appointmentIndex = slots.findIndex(
+        (slot) => slot.time === appointment.slot
+      );
+      if (appointmentIndex !== -1) {
+        const totalSlotsNeeded = appointment.duration / 30;
+        for (
+          let i = appointmentIndex;
+          i < appointmentIndex + totalSlotsNeeded;
+          i++
+        ) {
+          if (i >= slots.length) {
+            break;
+          }
+          slots[i].available = false;
         }
-        slots[i].available = false;
       }
-    }
-  });
+    });
+  }
 
   const procedureDurationInSlots = duration / 30;
   const availableSlots = [];
