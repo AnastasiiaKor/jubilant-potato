@@ -1,25 +1,5 @@
 const { Appointment } = require("../models/appointment");
 const { HttpError, ctrlWrapper } = require("../helpers");
-const SLOTS = [
-  { time: "11:00am", available: true },
-  { time: "11:30am", available: true },
-  { time: "12:00pm", available: true },
-  { time: "12:30pm", available: true },
-  { time: "1:00pm", available: true },
-  { time: "1:30pm", available: true },
-  { time: "2:00pm", available: true },
-  { time: "2:30pm", available: true },
-  { time: "3:00pm", available: true },
-  { time: "3:30pm", available: true },
-  { time: "4:00pm", available: true },
-  { time: "4:30pm", available: true },
-  { time: "5:00pm", available: true },
-  { time: "5:30pm", available: true },
-  { time: "6:00pm", available: true },
-  { time: "6:30pm", available: true },
-  { time: "7:00pm", available: true },
-  { time: "7:30pm", available: true },
-];
 
 const addAppointment = async (req, res) => {
   const newAppointment = await Appointment.create({ ...req.body });
@@ -43,9 +23,27 @@ const getSlots = async (req, res) => {
     throw HttpError(400, "Missing date or duration in the query");
   }
   const appointments = await Appointment.find({ date: date });
-  const slots = [...SLOTS];
-  console.log(slots);
-  console.log(SLOTS);
+  const SLOTS = [
+    { time: "11:00am", available: true },
+    { time: "11:30am", available: true },
+    { time: "12:00pm", available: true },
+    { time: "12:30pm", available: true },
+    { time: "1:00pm", available: true },
+    { time: "1:30pm", available: true },
+    { time: "2:00pm", available: true },
+    { time: "2:30pm", available: true },
+    { time: "3:00pm", available: true },
+    { time: "3:30pm", available: true },
+    { time: "4:00pm", available: true },
+    { time: "4:30pm", available: true },
+    { time: "5:00pm", available: true },
+    { time: "5:30pm", available: true },
+    { time: "6:00pm", available: true },
+    { time: "6:30pm", available: true },
+    { time: "7:00pm", available: true },
+    { time: "7:30pm", available: true },
+  ];
+
   if (appointments.length) {
     appointments.forEach((appointment) => {
       const appointmentIndex = slots.findIndex(
