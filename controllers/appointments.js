@@ -44,6 +44,8 @@ const getSlots = async (req, res) => {
   }
   const appointments = await Appointment.find({ date: date });
   const slots = [...SLOTS];
+  console.log(slots);
+  console.log(SLOTS);
   if (appointments.length) {
     appointments.forEach((appointment) => {
       const appointmentIndex = slots.findIndex(
