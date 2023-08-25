@@ -7,7 +7,7 @@ const stripe = require("stripe")(process.env.REACT_APP_STRIPE_SECRET_KEY);
 
 require("dotenv").config();
 
-const YOUR_DOMAIN = "http://localhost:3000";
+const YOUR_DOMAIN = "https://jubilant-potato.onrender.com";
 const app = express();
 app.use(express.static("public"));
 const upload = multer();
