@@ -1,8 +1,8 @@
 const express = require("express");
-const { validateBody } = require("../../middlewares");
 const ctrl = require("../../controllers/payments");
 const router = express.Router();
 
-router.post("/", ctrl.checkout);
+router.get("/config", ctrl.getKey);
+router.post("/create-payment-intent", ctrl.createIntent);
 
 module.exports = router;

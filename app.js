@@ -17,7 +17,7 @@ app.use(upload.any());
 app.use("/send", mailRouter);
 app.use("/appointments", appointmentRouter);
 
-app.use("/create-checkout-session", paymentRouter);
+app.use("/stripe", paymentRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
