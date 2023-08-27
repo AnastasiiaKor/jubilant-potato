@@ -1,27 +1,5 @@
-const { ctrlWrapper } = require("../helpers");
+const { ctrlWrapper, HttpError } = require("../helpers");
 const stripe = require("stripe")(process.env.REACT_APP_STRIPE_SECRET_KEY);
-
-// const checkout = async (req, res) => {
-//   let DOMAIN;
-//   process.env.NODE_ENV = "development"
-//     ? (DOMAIN = "http://localhost:3000")
-//     : (DOMAIN = "https://jubilant-potato.onrender.com");
-
-//   const session = await stripe.checkout.sessions.create({
-//     line_items: [
-//       {
-//         price: process.env.REACT_APP_STRIPE_PRICE_ID,
-//         quantity: 1,
-//       },
-//     ],
-//     mode: "payment",
-//     success_url: `${DOMAIN}?success=true`,
-//     cancel_url: `${DOMAIN}?canceled=true`,
-//   });
-
-//   res.redirect(303, session.url);
-//   //   res.status(200).json(session.url);
-// };
 
 const getKey = async (req, res) => {
   res
@@ -30,9 +8,23 @@ const getKey = async (req, res) => {
 };
 
 const createIntent = async (req, res) => {
+  const { serviceName } = req.params;
+
+  let serviceAmount;
+  switch (serviceName) {
+    case "permanent":
+    case "small-tattoo":
+      serviceAmount = 100;
+      break;
+    case "large-tattoo":
+      serviceAmount = 120;
+      break;
+    default:
+      throw HttpError(400, "Invalid service name");
+  }
   const paymentIntent = await stripe.paymentIntents.create({
-    currency: "usd",
-    amount: 100,
+    currency: "cad",
+    amount: serviceAmount,
     automatic_payment_methods: {
       enabled: true,
     },
