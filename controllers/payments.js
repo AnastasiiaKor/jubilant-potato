@@ -20,7 +20,7 @@ const createIntent = async (req, res) => {
       serviceAmount = 120;
       break;
     case "consultation":
-      serviceAmount = 0;
+      serviceAmount = 1;
       break;
     default:
       throw HttpError(400, "Invalid service name");
