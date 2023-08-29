@@ -18,12 +18,7 @@ const appointmentSchema = new Schema(
     },
     service: {
       type: String,
-      enum: [
-        "Small Tattoo",
-        "Large Tattoo",
-        "Permanent Makeup",
-        "Consultation/Touch-up",
-      ],
+      enum: ["small-tattoo", "large-tattoo", "permanent", "consultation"],
       required: [true, "Service is required"],
     },
     date: {
@@ -48,12 +43,7 @@ const addAppointmentSchema = Joi.object({
   email: Joi.string().email().required(),
   phone: Joi.string().required(),
   service: Joi.string()
-    .valid(
-      "Small Tattoo",
-      "Large Tattoo",
-      "Permanent Makeup",
-      "Consultation/Touch-up"
-    )
+    .valid("small-tattoo", "large-tattoo", "permanent", "consultation")
     .required(),
   date: Joi.string().required(),
   slot: Joi.string().required(),
