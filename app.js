@@ -4,6 +4,8 @@ const multer = require("multer");
 const mailRouter = require("./routes/api/mail");
 const appointmentRouter = require("./routes/api/appointments");
 const paymentRouter = require("./routes/api/payments");
+const adminRouter = require("./routes/api/admin");
+
 const upload = multer();
 
 require("dotenv").config();
@@ -16,6 +18,7 @@ app.use(upload.any());
 
 app.use("/send", mailRouter);
 app.use("/appointments", appointmentRouter);
+app.use("/admin", adminRouter);
 
 app.use("/stripe", paymentRouter);
 
