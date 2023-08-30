@@ -4,7 +4,7 @@ const Joi = require("joi");
 
 const adminSchema = new Schema(
   {
-    username: {
+    email: {
       type: String,
       required: true,
     },
@@ -21,7 +21,7 @@ const adminSchema = new Schema(
 );
 
 const commonAdminSchema = Joi.object({
-  username: Joi.string().required(),
+  email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
 });
 

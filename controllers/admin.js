@@ -5,11 +5,11 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const admin = await Admin.create({
-    username: username,
+    email: email,
     password: hashedPassword,
   });
 
@@ -17,8 +17,8 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
-  const admin = await Admin.findOne({ username });
+  const { email, password } = req.body;
+  const admin = await Admin.findOne({ email });
   if (!admin) {
     throw HttpError(404, "Wrong password or username");
   }
