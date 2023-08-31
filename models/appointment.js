@@ -50,8 +50,14 @@ const addAppointmentSchema = Joi.object({
   duration: Joi.number().valid(30, 60, 120).required(),
 });
 
+const updateAppointmentSchema = Joi.object({
+  date: Joi.string(),
+  slot: Joi.string(),
+});
+
 const schemas = {
   addAppointmentSchema,
+  updateAppointmentSchema,
 };
 
 appointmentSchema.post("save", HandleMongooseError);

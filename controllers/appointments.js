@@ -8,11 +8,13 @@ const addAppointment = async (req, res) => {
 };
 
 const getAppointments = async (req, res) => {
-  const { date } = req.query;
+  const { date, month } = req.query;
   let query = {};
   if (date) query.date = date;
 
-  const appointments = await Appointment.find(query).sort({ date: 1 });
+  if (month) query.date = { $regex: `^${month}\\.` };
+
+  const appointments = await Appointment.find(query);
 
   res.status(200).json(appointments);
 };
@@ -83,8 +85,33 @@ const getSlots = async (req, res) => {
   res.status(200).json(availableSlots);
 };
 
+const updateAppointment = async (req, res) => {
+  const { id } = req.params;
+  const appointment = await Appointment.findById(id);
+  if (!appointment) {
+    throw HttpError(404, "Bad request");
+  }
+  const updatedAppointment = await Appointment.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+
+  res.status(200).json(updatedAppointment);
+};
+
+const deleteAppointment = async (req, res) => {
+  const { id } = req.params;
+  const result = await Appointment.findByIdAndDelete(id);
+  if (!result) {
+    throw HttpError(404, "Bad request");
+  }
+
+  res.status(200).json({ message: "Appointment deleted" });
+};
+
 module.exports = {
   addAppointment: ctrlWrapper(addAppointment),
   getAppoinments: ctrlWrapper(getAppointments),
   getSlots: ctrlWrapper(getSlots),
+  updateAppointment: ctrlWrapper(updateAppointment),
+  deleteAppointment: ctrlWrapper(deleteAppointment),
 };
