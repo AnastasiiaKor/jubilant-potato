@@ -14,13 +14,13 @@ const createIntent = async (req, res) => {
   switch (serviceName) {
     case "permanent":
     case "small-tattoo":
-      serviceAmount = 100000;
+      serviceAmount = 10000;
       break;
     case "large-tattoo":
-      serviceAmount = 120000;
+      serviceAmount = 12000;
       break;
     case "consultation":
-      serviceAmount = 1000;
+      serviceAmount = 100;
       break;
     default:
       throw HttpError(400, "Invalid service name");
