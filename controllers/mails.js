@@ -3,7 +3,7 @@ const { ctrlWrapper, sendEmail } = require("../helpers");
 const sendMail = async (req, res) => {
   const { name, email, phone, address } = req.body;
   const mail = {
-    to: "anastasiya.kormilitsina@gmail.com",
+    to: `${email}`,
     subject: `${name}`,
     html: `
     <p><b>Email:</b> ${email}</p>

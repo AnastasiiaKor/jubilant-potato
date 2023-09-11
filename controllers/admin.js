@@ -4,18 +4,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = process.env;
 
-const register = async (req, res) => {
-  const { email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const admin = await Admin.create({
-    email: email,
-    password: hashedPassword,
-  });
-
-  res.status(201).json({ message: "Registration succeeded" });
-};
-
 const login = async (req, res) => {
   const { email, password } = req.body;
   const admin = await Admin.findOne({ email });
@@ -46,7 +34,6 @@ const checkAdmin = async (req, res) => {
 };
 
 module.exports = {
-  register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   logout: ctrlWrapper(logout),
   checkAdmin: ctrlWrapper(checkAdmin),
