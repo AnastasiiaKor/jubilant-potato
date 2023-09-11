@@ -16,11 +16,11 @@ app.use(cors());
 app.use(express.json());
 app.use(upload.any());
 
-app.use("api/send", mailRouter);
-app.use("api/appointments", appointmentRouter);
-app.use("api/admin", adminRouter);
+app.use("/api/send", mailRouter);
+app.use("/api/appointments", appointmentRouter);
+app.use("/api/admin", adminRouter);
 
-app.use("api/stripe", paymentRouter);
+app.use("/api/stripe", paymentRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
