@@ -3,8 +3,8 @@ const { ctrlWrapper, sendEmail } = require("../helpers");
 const sendMail = async (req, res) => {
   const { name, email, phone, address } = req.body;
   const date = new Date();
-  const day = date.getDate().toString().padStart(2, "0"); // добавляем нуль перед числами < 10
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // месяцы начинаются с 0, поэтому добавляем 1
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear();
   const formattedDate = `${month}.${day}.${year}`;
   const mail = {
