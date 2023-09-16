@@ -9,15 +9,16 @@ const getKey = async (req, res) => {
 
 const createIntent = async (req, res) => {
   const { serviceName } = req.params;
+  const { email } = req.body;
 
   let serviceAmount;
   switch (serviceName) {
     case "permanent":
     case "small-tattoo":
-      serviceAmount = 10000;
+      serviceAmount = 11300;
       break;
     case "large-tattoo":
-      serviceAmount = 12000;
+      serviceAmount = 13560;
       break;
     case "consultation":
       serviceAmount = 100;
@@ -31,6 +32,8 @@ const createIntent = async (req, res) => {
     automatic_payment_methods: {
       enabled: true,
     },
+    description: "Thanks for your booking!",
+    receipt_email: `${email}`,
   });
   res.status(200).json({ clientSecret: paymentIntent.client_secret });
 };
