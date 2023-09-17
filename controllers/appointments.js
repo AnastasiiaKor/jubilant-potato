@@ -1,8 +1,21 @@
 const { Appointment } = require("../models/appointment");
-const { HttpError, ctrlWrapper } = require("../helpers");
+const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 const addAppointment = async (req, res) => {
   const newAppointment = await Appointment.create({ ...req.body });
+  const { slot, date, service, name, email } = req.body;
+  const mail = {
+    to: `${email}`,
+    subject: "Confirmation",
+    html: `
+    <p><b>Dear ${name}</b></p>
+    <p>I'm excited to confirm your appointment! Your date: <b>${date}</b> and time <b>${slot}</b>.</p>
+    <p>Chosen procedure: <b>${service}</b></p>
+    <p>See you soon!</p>
+    <p>Best regards, Alina Ivenko</p>
+  `,
+  };
+  await sendEmail(mail);
 
   res.status(201).json(newAppointment);
 };
