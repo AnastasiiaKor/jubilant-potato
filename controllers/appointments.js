@@ -15,7 +15,7 @@ const addAppointment = async (req, res) => {
     <p>Duration: <b>${duration} min</b></p>
     <p>Procedure: <b>${service}</b></p>
     <p>Address: <b>${address}</b></p>
-    <p>Please remember the following important information for your appointment:</p>
+    <p><b>Please remember the following important information for your appointment:</b></p>
     <p>1. Arrival Time: Please arrive at the studio at least 15 minutes before your scheduled appointment time. This allows us to ensure a smooth and timely start.</p>
     <p>2. Design Ideas: If you have any specific design ideas or references, please bring them with you. We will work with you to finalize the design during your appointment.</p>
     <p>3. Consultation: There will be a brief consultation before the tattooing begins to discuss design details, placement, and any questions you may have.</p>
