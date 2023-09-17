@@ -3,16 +3,31 @@ const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 const addAppointment = async (req, res) => {
   const newAppointment = await Appointment.create({ ...req.body });
-  const { slot, date, service, name, email } = req.body;
+  const { slot, date, service, name, email, address, duration } = req.body;
   const mail = {
     to: `${email}`,
-    subject: "Confirmation",
+    subject: "Tattoo Appointment Confirmation",
     html: `
     <p><b>Dear ${name}</b></p>
-    <p>I'm excited to confirm your appointment! Your date: <b>${date}</b> and time <b>${slot}</b>.</p>
-    <p>Chosen procedure: <b>${service}</b></p>
-    <p>See you soon!</p>
-    <p>Best regards, Alina Ivenko</p>
+    <p>I'm excited to confirm your upcoming tattoo appointment and look forward to creating a unique and beautiful piece of art for you. Here are the details of your appointment:</p>
+    <p>Appointment Date: <b>${date}</b></p>
+    <p>Appointment Time: <b>${slot}</b></p>
+    <p>Duration: <b>${duration} min</b></p>
+    <p>Procedure: <b>${service}</b></p>
+    <p>Address: <b>${address}</b></p>
+    <p>Please remember the following important information for your appointment:</p>
+    <p>1. Arrival Time: Please arrive at the studio at least 15 minutes before your scheduled appointment time. This allows us to ensure a smooth and timely start.</p>
+    <p>2. Design Ideas: If you have any specific design ideas or references, please bring them with you. We will work with you to finalize the design during your appointment.</p>
+    <p>3. Consultation: There will be a brief consultation before the tattooing begins to discuss design details, placement, and any questions you may have.</p>
+    <p>4. ID and Age Requirement: Please bring a valid government-issued photo ID, as this is required for age verification for all clients. You must be 18 years or older to get a tattoo.</p>
+    <p>5. Cancellation Policy: Our cancellation policy emphasizes that the tattoo deposit is non-refundable. If you wish to reschedule your appointment, we kindly request at least 1 week's notice. Failing to provide adequate notice will require purchasing a new deposit for the rescheduled appointment.</p>
+    <p>If you have any questions or need further assistance, feel free to reply to this email.</p>
+    <p>Thank you for choosing and trusting me with world of art. I can't wait to create a beautiful piece of art for you. See you on <b>${date}</b>!</p>
+    <p>Sincerely yours,</p>
+    <p>I.A.</p>
+    <p>Feel free to reach out if you have any questions or special requests by <a href="mailto:inkedbyAlina@gmail.com">inkedbyAlina@gmail.com</a></p>
+    <p><a href="https://alinaivenko.com">Visit my website for more information</a></p>
+
   `,
   };
   await sendEmail(mail);
