@@ -119,10 +119,29 @@ const updateAppointment = async (req, res) => {
   if (!appointment) {
     throw HttpError(404, "Bad request");
   }
+
   const updatedAppointment = await Appointment.findByIdAndUpdate(id, req.body, {
     new: true,
   });
-
+  const { email, slot, date, service, name } = updatedAppointment;
+  const confirmation = {
+    to: `${email}`,
+    subject: "Rescheduling Your Tattoo Appointment",
+    html: `
+    <p><b>Dear ${name}</b></p>
+    <p>I hope this email finds you well. I appreciate your prompt communication regarding the rescheduling of your ${service} appointment. Your satisfaction and comfort are of utmost importance to me, and I'm more than happy to accommodate your request.</p>
+    <p>The new appointment details are as follows:</p>
+    <p>New Date: <b>${date}</b></p>
+    <p>New Time: <b>${slot}</b></p>
+    <p> If you have any further questions or need additional assistance, please do not hesitate to contact us.</p>
+    <p>Thank you for choosing me for your tattoo journey, and I appreciate your cooperation in rescheduling this appointment.</p>
+    <p>Warm regards,</p>
+    <p>Yours I.A.</p>
+    <p>Feel free to reach out if you have any questions or special requests by <a href="mailto:inkedbyAlina@gmail.com">inkedbyAlina@gmail.com</a></p>
+    <p><a href="https://alinaivenko.com">Visit my website for more information</a></p>
+  `,
+  };
+  await sendEmail(confirmation);
   res.status(200).json(updatedAppointment);
 };
 
