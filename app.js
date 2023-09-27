@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const multer = require("multer");
 const mailRouter = require("./routes/api/mail");
 const appointmentRouter = require("./routes/api/appointments");

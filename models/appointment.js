@@ -38,6 +38,10 @@ const appointmentSchema = new Schema(
       type: String,
       required: [true, "Address is required"],
     },
+    description: {
+      type: String,
+      default: "none",
+    },
   },
   { versionKey: false, timestamps: false }
 );
@@ -53,6 +57,7 @@ const addAppointmentSchema = Joi.object({
   slot: Joi.string().required(),
   duration: Joi.number().valid(30, 60, 120).required(),
   address: Joi.string().required(),
+  description: Joi.string(),
 });
 
 const updateAppointmentSchema = Joi.object({

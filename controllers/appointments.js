@@ -3,7 +3,8 @@ const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 const addAppointment = async (req, res) => {
   const newAppointment = await Appointment.create({ ...req.body });
-  const { slot, date, service, name, email, address, duration } = req.body;
+  const { slot, date, service, name, email, address, duration, description } =
+    req.body;
   const mail = {
     to: `${email}`,
     subject: "Tattoo Appointment Confirmation",
@@ -31,6 +32,29 @@ const addAppointment = async (req, res) => {
   `,
   };
   await sendEmail(mail);
+
+  if (req.files[0]) {
+    const sketchMail = {
+      to: "inkedbyalina@gmail.com",
+      subject: `${name} sketch - ${date}`,
+      html: `
+    <p><b>Name:</b> ${name}</p>
+    <p><b>Date:</b> ${date}</p>
+    <p><b>Description:</b> ${description}</p>
+    <p><b>Address:</b> ${address}</p>
+  `,
+      attachments: [
+        {
+          content: req.files[0].buffer.toString("base64"),
+          filename: req.files[0].originalname,
+          type: req.files[0].mimetype,
+          disposition: "attachment",
+        },
+      ],
+    };
+
+    await sendEmail(sketchMail);
+  }
 
   res.status(201).json(newAppointment);
 };
