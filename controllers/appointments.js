@@ -3,8 +3,17 @@ const { HttpError, ctrlWrapper, sendEmail } = require("../helpers");
 
 const addAppointment = async (req, res) => {
   const newAppointment = await Appointment.create({ ...req.body });
-  const { slot, date, service, name, email, address, duration, description } =
-    req.body;
+  const {
+    slot,
+    date,
+    service,
+    name,
+    email,
+    address,
+    duration,
+    description = "none",
+    phone,
+  } = req.body;
   const mail = {
     to: `${email}`,
     subject: "Tattoo Appointment Confirmation",
@@ -33,28 +42,29 @@ const addAppointment = async (req, res) => {
   };
   await sendEmail(mail);
 
-  if (req.files[0]) {
-    const sketchMail = {
-      to: "inkedbyalina@gmail.com",
-      subject: `${name} sketch - ${date}`,
-      html: `
+  const confirmation = {
+    to: "anastasiya.kormilitsina@gmail.com",
+    subject: `${name} - ${date}, ${slot}`,
+    html: `
     <p><b>Name:</b> ${name}</p>
-    <p><b>Date:</b> ${date}</p>
+    <p><b>Date and time of appointment:</b>  ${date}, ${slot}</p>
+    <p><b>Contact information:</b>  ${email}, ${phone}</p>
+    <p><b>Service:</b> ${service}</p>
     <p><b>Description:</b> ${description}</p>
     <p><b>Address:</b> ${address}</p>
   `,
-      attachments: [
-        {
-          content: req.files[0].buffer.toString("base64"),
-          filename: req.files[0].originalname,
-          type: req.files[0].mimetype,
-          disposition: "attachment",
-        },
-      ],
-    };
-
-    await sendEmail(sketchMail);
+  };
+  if (req.files[0]) {
+    confirmation.attachments = [
+      {
+        content: req.files[0].buffer.toString("base64"),
+        filename: req.files[0].originalname,
+        type: req.files[0].mimetype,
+        disposition: "attachment",
+      },
+    ];
   }
+  await sendEmail(confirmation);
 
   res.status(201).json(newAppointment);
 };
@@ -68,47 +78,26 @@ const getAppointments = async (req, res) => {
 
   const appointments = await Appointment.find(query);
 
-  function sortAppointmentsByTime(appointments) {
-    function parseTime(timeString) {
-      const timeRegex = /(\d{1,2}):(\d{2})([APap][Mm])/;
-      const match = timeString.match(timeRegex);
+  function convertToDate(appointment) {
+    const [month, day, year] = appointment.date.split(".").map(Number);
 
-      if (!match) {
-        return null;
-      }
-      const [, hours, minutes, period] = match;
-      let hours24 = parseInt(hours, 10);
-      if (period.toLowerCase() === "pm") {
-        hours24 += 12;
-      }
+    let [hours, minutes] = appointment.slot
+      .replace(/(am|pm)/i, "")
+      .split(":")
+      .map(Number);
 
-      return new Date(0, 0, 0, hours24, parseInt(minutes, 10));
+    if (/pm/i.test(appointment.slot) && hours !== 12) {
+      hours += 12;
+    } else if (/am/i.test(appointment.slot) && hours === 12) {
+      hours = 0;
     }
 
-    appointments.sort((a, b) => {
-      const timeA = parseTime(a.slot);
-      const timeB = parseTime(b.slot);
-
-      if (!timeA || !timeB) {
-        return 0;
-      }
-
-      if (timeA < timeB) {
-        return -1;
-      }
-
-      if (timeA > timeB) {
-        return 1;
-      }
-
-      return 0;
-    });
-
-    return appointments;
+    return new Date(year, month - 1, day, hours, minutes);
   }
-  const sortedAppointments = sortAppointmentsByTime(appointments);
 
-  res.status(200).json(sortedAppointments);
+  appointments.sort((a, b) => convertToDate(a) - convertToDate(b));
+
+  res.status(200).json(appointments);
 };
 
 const getSlots = async (req, res) => {
