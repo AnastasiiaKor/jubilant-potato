@@ -11,7 +11,7 @@ router.post(
   ctrl.addAppointment
 );
 
-router.get("/", ctrl.getAppoinments);
+router.get("/", authenticate, ctrl.getAppoinments);
 
 router.get("/slots", ctrl.getSlots);
 
