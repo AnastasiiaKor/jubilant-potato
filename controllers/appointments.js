@@ -68,7 +68,47 @@ const getAppointments = async (req, res) => {
 
   const appointments = await Appointment.find(query);
 
-  res.status(200).json(appointments);
+  function sortAppointmentsByTime(appointments) {
+    function parseTime(timeString) {
+      const timeRegex = /(\d{1,2}):(\d{2})([APap][Mm])/;
+      const match = timeString.match(timeRegex);
+
+      if (!match) {
+        return null;
+      }
+      const [, hours, minutes, period] = match;
+      let hours24 = parseInt(hours, 10);
+      if (period.toLowerCase() === "pm") {
+        hours24 += 12;
+      }
+
+      return new Date(0, 0, 0, hours24, parseInt(minutes, 10));
+    }
+
+    appointments.sort((a, b) => {
+      const timeA = parseTime(a.slot);
+      const timeB = parseTime(b.slot);
+
+      if (!timeA || !timeB) {
+        return 0;
+      }
+
+      if (timeA < timeB) {
+        return -1;
+      }
+
+      if (timeA > timeB) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    return appointments;
+  }
+  const sortedAppointments = sortAppointmentsByTime(appointments);
+
+  res.status(200).json(sortedAppointments);
 };
 
 const getSlots = async (req, res) => {
