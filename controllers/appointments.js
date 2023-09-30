@@ -43,7 +43,7 @@ const addAppointment = async (req, res) => {
   await sendEmail(mail);
 
   const confirmation = {
-    to: "anastasiya.kormilitsina@gmail.com",
+    to: "inkedbyalina@gmail.com",
     subject: `${name} - ${date}, ${slot}`,
     html: `
     <p><b>Name:</b> ${name}</p>
