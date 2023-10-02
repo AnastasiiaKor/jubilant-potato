@@ -31,8 +31,13 @@ const appointmentSchema = new Schema(
     },
     duration: {
       type: Number,
-      enum: [30, 60, 120],
       required: [true, "Duration is reequired"],
+      validate: {
+        validator: function (value) {
+          return value % 30 === 0;
+        },
+        message: "Duration must be a multiple of 30.",
+      },
     },
     address: {
       type: String,
@@ -41,6 +46,9 @@ const appointmentSchema = new Schema(
     description: {
       type: String,
       default: "none",
+    },
+    instagram: {
+      type: String,
     },
   },
   { versionKey: false, timestamps: false }
@@ -55,14 +63,23 @@ const addAppointmentSchema = Joi.object({
     .required(),
   date: Joi.string().required(),
   slot: Joi.string().required(),
-  duration: Joi.number().valid(30, 60, 120).required(),
+  duration: Joi.number().required().min(30),
   address: Joi.string().required(),
   description: Joi.string(),
+  instagram: Joi.string(),
 });
 
 const updateAppointmentSchema = Joi.object({
   date: Joi.string(),
   slot: Joi.string(),
+  duration: Joi.number()
+    .min(30)
+    .custom((value, helpers) => {
+      if (value % 30 !== 0) {
+        return helpers.message("Duration must be a multiple of 30");
+      }
+      return value;
+    }),
 });
 
 const schemas = {

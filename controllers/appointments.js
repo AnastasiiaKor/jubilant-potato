@@ -51,7 +51,6 @@ const addAppointment = async (req, res) => {
     <p><b>Contact information:</b>  ${email}, ${phone}</p>
     <p><b>Service:</b> ${service}</p>
     <p><b>Description:</b> ${description}</p>
-    <p><b>Address:</b> ${address}</p>
   `,
   };
   if (req.files[0]) {
@@ -176,7 +175,7 @@ const updateAppointment = async (req, res) => {
   const updatedAppointment = await Appointment.findByIdAndUpdate(id, req.body, {
     new: true,
   });
-  const { email, slot, date, service, name } = updatedAppointment;
+  const { email, slot, date, service, name, duration } = updatedAppointment;
   const confirmation = {
     to: `${email}`,
     subject: "Rescheduling Your Tattoo Appointment",
@@ -184,8 +183,9 @@ const updateAppointment = async (req, res) => {
     <p><b>Dear ${name}</b></p>
     <p>I hope this email finds you well. I appreciate your prompt communication regarding the rescheduling of your ${service} appointment. Your satisfaction and comfort are of utmost importance to me, and I'm more than happy to accommodate your request.</p>
     <p>The new appointment details are as follows:</p>
-    <p>New Date: <b>${date}</b></p>
-    <p>New Time: <b>${slot}</b></p>
+    <p>Date: <b>${date}</b></p>
+    <p>Time: <b>${slot}</b></p>
+    <p>Duration: <b>${duration}</b></p>
     <p> If you have any further questions or need additional assistance, please do not hesitate to contact us.</p>
     <p>Thank you for choosing me for your tattoo journey, and I appreciate your cooperation in rescheduling this appointment.</p>
     <p>Warm regards,</p>
