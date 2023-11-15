@@ -64,8 +64,8 @@ const addAppointmentSchema = Joi.object({
   slot: Joi.string().required(),
   duration: Joi.number().required().min(30),
   address: Joi.string().required(),
-  description: Joi.string(),
-  instagram: Joi.string(),
+  description: Joi.string().optional(),
+  instagram: Joi.string().optional(),
 });
 
 const updateAppointmentSchema = Joi.object({
