@@ -45,11 +45,9 @@ const appointmentSchema = new Schema(
     },
     description: {
       type: String,
-      default: "none",
     },
     instagram: {
       type: String,
-      default: "none",
     },
   },
   { versionKey: false, timestamps: false }
