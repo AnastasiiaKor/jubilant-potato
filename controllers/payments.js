@@ -20,8 +20,8 @@ const createIntent = async (req, res) => {
     case "large-tattoo":
       serviceAmount = 13560;
       break;
-    case "consultation":
-      serviceAmount = 100;
+    case "touch-up":
+      serviceAmount = 2260;
       break;
     default:
       throw HttpError(400, "Invalid service name");
