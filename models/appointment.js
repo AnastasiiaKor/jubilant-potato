@@ -31,7 +31,7 @@ const appointmentSchema = new Schema(
     },
     duration: {
       type: Number,
-      required: [true, "Duration is reequired"],
+      required: [true, "Duration is required"],
       validate: {
         validator: function (value) {
           return value % 30 === 0;
@@ -49,6 +49,7 @@ const appointmentSchema = new Schema(
     },
     instagram: {
       type: String,
+      default: "none",
     },
   },
   { versionKey: false, timestamps: false }
