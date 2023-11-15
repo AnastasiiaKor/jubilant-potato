@@ -11,9 +11,9 @@ const addAppointment = async (req, res) => {
     email,
     address,
     duration,
-    description,
+    description = "none",
     phone,
-    instagram,
+    instagram = "none",
   } = req.body;
   const mail = {
     to: `${email}`,

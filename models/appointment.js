@@ -45,9 +45,11 @@ const appointmentSchema = new Schema(
     },
     description: {
       type: String,
+      default: "none",
     },
     instagram: {
       type: String,
+      default: "none",
     },
   },
   { versionKey: false, timestamps: false }
@@ -64,8 +66,18 @@ const addAppointmentSchema = Joi.object({
   slot: Joi.string().required(),
   duration: Joi.number().required().min(30),
   address: Joi.string().required(),
-  description: Joi.string().optional(),
-  instagram: Joi.string().optional(),
+  description: Joi.string()
+    .optional()
+    .allow(null)
+    .allow("")
+    .empty("")
+    .default("none"),
+  instagram: Joi.string()
+    .optional()
+    .allow(null)
+    .allow("")
+    .empty("")
+    .default("none"),
 });
 
 const updateAppointmentSchema = Joi.object({
