@@ -38,7 +38,25 @@ const createIntent = async (req, res) => {
   res.status(200).json({ clientSecret: paymentIntent.client_secret });
 };
 
+const createPayment = async (req, res) => {
+  const { email, amount } = req.body;
+
+  const totalAmount = amount * 100;
+
+  const paymentIntent = await stripe.paymentIntents.create({
+    currency: "cad",
+    amount: totalAmount,
+    automatic_payment_methods: {
+      enabled: true,
+    },
+    description: "Thanks for your payment!",
+    receipt_email: `${email}`,
+  });
+  res.status(200).json({ clientSecret: paymentIntent.client_secret });
+};
+
 module.exports = {
   getKey: ctrlWrapper(getKey),
   createIntent: ctrlWrapper(createIntent),
+  createPayment: ctrlWrapper(createPayment),
 };
